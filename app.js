@@ -22,18 +22,21 @@ function displayTasks() {
 }
 
 function getRandomImageUrl() {
-    var randomIndex = Math.floor(Math.random() * 10);
+    var randomIndex = Math.floor(Math.random() * 9)+1;
     var randomNumberString = randomIndex.toString();
     while (randomNumberString.length < 3) {
         randomNumberString = '0' + randomNumberString;
     }
-    return "/UI_src/imgs/pokemon/pokemon_icon_" + randomNumberString + "_00.png";
+    return "UI_src/imgs/pokemon/pokemon_icon_" + randomNumberString + "_00.png";
 }
 
 function displayRandomImage() {
-    var randomImageUrl = getRandomImageUrl();
-    var imageElement = document.getElementById("random-image");
-    imageElement.src = randomImageUrl;
+    for (var i = 1; i < 5; i++) {
+        var randomImageUrl = getRandomImageUrl();
+        var imageElement = document.getElementById("random-image" + i);
+        imageElement.src = randomImageUrl;
+        imageElement.alt = randomImageUrl;
+    }
 }
 
 // Call the function to display tasks when the page loads
