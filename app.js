@@ -39,6 +39,7 @@ function displayRandomImage() {
     }
 }
 
+
 // Call the function to display tasks when the page loads
 displayTasks();
 displayRandomImage()
