@@ -1,39 +1,80 @@
-function displayTasks() {
-    // fetching from the hardcoded JSON 
-    fetch('task-list/hard-coded-tasks.json')
-        .then(response => response.json()) 
-        .then(tasks => {
-            const taskWidget = document.getElementById('task_list_items'); // getting the container where tasks will be displayed
-            taskWidget.innerHTML = ''; // clearing any existing content in the container
+document.addEventListener('DOMContentLoaded', function() {
+    // Get references to DOM elements
+    const taskWidget = document.getElementById('task_list_items');
+    const addTaskButton = document.getElementById('add-task');
+    const newTaskInput = document.getElementById('new-task');
 
-            // looping through each task in the JSON array
-            tasks.forEach(task => {
-                const taskDiv = document.createElement('div'); // new div created for each task
-                taskDiv.classList.add('task'); // adding a task class for styling if needed
-
-                // Creating a checkbox input for the task completion status
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox'; // setting the type of input to checkbox
-                checkbox.checked = task.completed; // setting the checked status based on the task's completion status
-                checkbox.classList.add('task-checkbox'); // adding a class for styling if needed
-
-                // formatting the due date
-                const dueDate = new Date(task.due).toLocaleString(); // converting ISO date to a local string format
-
-                // setting the inner HTML of the task div to display task details
-                taskDiv.innerHTML = `
-                    <label class="task-label">
-                        ${checkbox.outerHTML} 
-                        ${task.task} 
-                        <span class="task-priority">Priority: ${task.priority}</span>
-                        <span class="task-due">Due: ${dueDate}</span>
-                    </label>
-                `;
-
-                taskWidget.appendChild(taskDiv); // appending the new task div to the container
+    // Function to load tasks from JSON and display them
+    function loadTasks() {
+        fetch('task-list/hard-coded-tasks.json')
+            .then(response => response.json())
+            .then(tasks => {
+                taskWidget.innerHTML = ''; // Clear existing tasks
+                tasks.forEach(task => {
+                    renderTask(task);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
             });
-        })
-        .catch(error => console.error('Error fetching tasks:', error)); // error logging
+    }
+
+    // Function to render a single task
+    function renderTask(task) {
+        const taskDiv = document.createElement('div');
+        taskDiv.classList.add('task');
+
+        // Creating a checkbox input for the task completion status
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = task.completed;
+        checkbox.classList.add('task-checkbox');
+        checkbox.onchange = () => updateTaskCompletion(task.id, checkbox.checked);
+
+        // Create elements for task details
+        const taskDescription = document.createElement('span');
+        taskDescription.textContent = task.task;
+
+        const prioritySpan = document.createElement('span');
+        prioritySpan.textContent = ` Priority: ${task.priority}`;
+
+        const dueSpan = document.createElement('span');
+        dueSpan.textContent = ` Due: ${new Date(task.due).toLocaleString()}`;
+
+        // Append elements to taskDiv
+        taskDiv.appendChild(checkbox);
+        taskDiv.appendChild(taskDescription);
+        taskDiv.appendChild(prioritySpan);
+        taskDiv.appendChild(dueSpan);
+
+        taskWidget.appendChild(taskDiv);
+    }
+
+    // Event listener for adding new tasks
+    if (addTaskButton) {
+        addTaskButton.addEventListener('click', () => {
+            const taskTitle = newTaskInput.value.trim();
+            if (taskTitle) {
+                const newTask = {
+                    id: Date.now(), // unique identifier for the new task
+                    task: taskTitle,
+                    completed: false,
+                    priority: 'Low',
+                    due: new Date().toISOString()
+                };
+                renderTask(newTask);
+                newTaskInput.value = ''; // Clear the input after adding
+            }
+        });
+    }
+
+    // Load initial tasks
+    loadTasks();
+});
+
+// Function to update task completion status
+function updateTaskCompletion(taskId, isCompleted) {
+    console.log(`Task ${taskId} completion status updated to ${isCompleted}`);
+    // Update the task completion in local storage or server
 }
 
-document.addEventListener('DOMContentLoaded', displayTasks);
