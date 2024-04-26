@@ -172,14 +172,14 @@
             }
         }
 
-        .task:hover {
+
+      .task:hover {
             background-color: rgba(31, 170, 151, 0.888); 
             cursor: pointer; 
             transition: background-color 0.3s ease; 
             transform: translateY(-10px);
             color: rgba(195, 247, 131, 0.932);
         }
-
         .edit-button {
             padding: 5px 10px; 
             border: none;
@@ -228,7 +228,6 @@
         .cancel-button:hover {
             background-color: rgb(197, 177, 148);
         }
-        
 
         .radiobtn {
             margin: auto 20px auto 10px;
