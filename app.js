@@ -1,3 +1,4 @@
+
 let caughtPokemon = []
 
 pokemon_dict = {
@@ -82,7 +83,6 @@ pokemon_dict = {
     "79":"slowpoke",
     "80":"slowbro"
 }
-
 /**
  *  Note: the checkboxes do not have any current functionality when checked or unchecked
  */
@@ -121,6 +121,8 @@ function renderTask(taskItem) {
     checkbox.addEventListener('change', function() {
         if (this.checked) {
             addPokemonToInventory(taskDiv);
+            // Call function to display confetti
+            displayConfetti();
         }
     });
     
@@ -151,6 +153,34 @@ function renderTask(taskItem) {
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => deleteTask(taskDiv, taskItem.id));
 
+     // Create a div for the health bar container
+    const healthBarContainer = document.createElement("div");
+    healthBarContainer.classList.add("health-bar-container");
+
+    //Calculate the amount of time left, then make the div element that width accordingly
+    let dueDateUnix = new Date(taskItem.due).getTime();
+    let now = Math.floor(Date.now());
+    let difference = dueDateUnix - now;
+
+    // Calculate the width of the health bar based on the time left
+    let widthPercentage = (difference / dueDateUnix) * 8000;
+
+    //If due date has passed, make sure health bar is empty
+    if (dueDateUnix < now) {
+        widthPercentage = 0;
+    }
+
+    // Create a div for the health bar
+    const healthBar = document.createElement("div");
+    healthBar.classList.add("health-bar");  
+
+    // Set the width of the health bar
+    healthBar.style.width = `${widthPercentage}%`;
+
+    // Add the health bar to the container
+    healthBarContainer.appendChild(healthBar);
+
+
     // Put edit & delete button into "container"
     buttonContainer.appendChild(editButton);
     buttonContainer.appendChild(deleteButton);
@@ -173,7 +203,43 @@ function renderTask(taskItem) {
     taskDiv.appendChild(buttonContainer);
     taskDiv.appendChild(imageContainer);
 
+    taskDiv.appendChild(healthBarContainer);  
+
+
     taskList.appendChild(taskDiv);
+}
+
+function displayConfetti() {
+    // Create confetti elements and add to the document
+    const confettiContainer = document.createElement("div");
+    confettiContainer.classList.add("confetti-container");
+    document.body.appendChild(confettiContainer);
+
+    // Create confetti pieces
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.backgroundColor = getRandomColor();
+        confetti.style.left = `${Math.random() * window.innerWidth}px`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confetti.style.animationDelay = `${Math.random()}s`;
+        confettiContainer.appendChild(confetti);
+    }
+
+    // Remove confetti after animation
+    setTimeout(() => {
+        document.body.removeChild(confettiContainer);
+    }, 5000);
+}
+
+// Random color generator for confetti
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 // // Function that adds a new task
@@ -199,7 +265,7 @@ function renderTask(taskItem) {
 
 // Function that deletes a task
 function deleteTask(divItem, taskId) {
-    fetch('task-list/hard-coded-tasks.json')
+    fetch('task-list/hard-coded-tasks.JSON')
     .then(response => response.json())
         .then(data => {
             divItem.remove();
@@ -245,12 +311,14 @@ function editTask(divItem, taskId) {
     // Create a save button to save changes
     const saveButton = document.createElement("button");
     saveButton.textContent = "Save";
+    saveButton.setAttribute("class", "save-button");
     saveButton.addEventListener("click", () => saveEdit(divItem, taskId, editInput.value, taskTitle, 
         dateInput.value, originalDate, timeInput.value, originalTime));
 
     // Create a cancel button to cancel changes
     const cancelButton = document.createElement("button");
     cancelButton.textContent = "Cancel";
+    cancelButton.setAttribute("class", "cancel-button");
     cancelButton.addEventListener("click", () => cancelEdit(divItem, taskTitle));
     
     buttonContainer.appendChild(saveButton);
@@ -336,7 +404,7 @@ loadTasks();
 
 // Function to fetch and display tasks from JSON
 function displayTasks() {
-    fetch('task-list/hard-coded-tasks.json')
+    fetch('task-list/hard-coded-tasks.JSON')
         .then(response => response.json())
         .then(tasks => {
             const taskWidget = document.getElementById('taskWidget');
