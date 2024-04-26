@@ -1,4 +1,3 @@
-
 /**
  *  Note: the checkboxes do not have any current functionality when checked or unchecked
  */
@@ -10,7 +9,7 @@ const addTaskButton = document.getElementById("add-task");
 
 // Function that loads JSON file for webpage to display task list
 function loadTasks() {
-    fetch('task-list/hard-coded-tasks.json')
+    fetch('task-list/hard-coded-tasks.JSON')
         .then(response => response.json())
         .then(data => {
             data.forEach(task => {
@@ -96,7 +95,7 @@ function renderTask(taskItem) {
 
 // Function that deletes a task
 function deleteTask(divItem, taskId) {
-    fetch('task-list/hard-coded-tasks.json')
+    fetch('task-list/hard-coded-tasks.JSON')
     .then(response => response.json())
         .then(data => {
             divItem.remove();
@@ -233,7 +232,7 @@ loadTasks();
 
 // Function to fetch and display tasks from JSON
 function displayTasks() {
-    fetch('task-list/hard-coded-tasks.json')
+    fetch('task-list/hard-coded-tasks.JSON')
         .then(response => response.json())
         .then(tasks => {
             const taskWidget = document.getElementById('taskWidget');

@@ -11,11 +11,22 @@
     background-size: cover;
     background-repeat: no-repeat;
 
-    #blur {
-        background-color: rgba(255, 255, 255, 0.098);
-        backdrop-filter: blur(4px);
-        padding: 5vh 5vw 5vh 5vw;
+    #petals-animation {
+        background-image: url('UI_src/imgs/petals1.gif');
+        /* background-image: url('UI_src/imgs/petals_falling.gif'); */
+        background-size:cover;
+        width: 100vw;
+        height: 100vh;
+        #blur {
+            background-color: rgba(255, 255, 255, 0.098);
+            backdrop-filter: blur(2px);
+            padding: 5vh 5vw 5vh 5vw;
+
+
+        }
     }
+
+
 }
 
 #column-container {
