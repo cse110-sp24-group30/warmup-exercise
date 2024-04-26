@@ -125,7 +125,7 @@
                 font-weight: bold;
             }
 
-            #hpcontainer{
+/*             #hpcontainer{
                 flex: 1;
                 display: flex;
                 align-items: center;
@@ -171,7 +171,7 @@
                 height: 25px;
                 border-radius: 10px;
                 background-color: red;
-            }
+            } */
             
 
             #image-container {
@@ -180,6 +180,22 @@
                 /* background-color: rgb(209, 18, 18); //testing purposes */
                 height: 100%;
                 align-items: end;
+            }
+
+            .health-bar-container {
+                width: 60%; 
+                height: 25%; 
+                background-color: red;
+                border: 0.2em solid rgb(116, 104, 89);  
+                 
+                display: flex;
+                justify-content: start;
+            }
+                
+            .health-bar {
+                /* The width will be set dynamically in the JavaScript code */
+                height: 100%;
+                background-color: rgb(141,193,21);
             }
         }
 
