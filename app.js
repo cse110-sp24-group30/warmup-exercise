@@ -1,3 +1,85 @@
+pokemon_dict = {
+    "1":"bulbasaur",
+    "2":"ivysaur",
+    "3":"venusaur",
+    "4":"charmander",
+    "5":"charmeleon",
+    "6":"charizard",
+    "7":"squirtle",
+    "8":"wartortle",
+    "9":"blastoise",
+    "10":"caterpie",
+    "11":"metapod",
+    "12":"butterfree",
+    "13":"weedle",
+    "14":"kakuna",
+    "15":"beedrill",
+    "16":"pidgey",
+    "17":"pidgeotto",
+    "18":"pidgeot",
+    "19":"rattata",
+    "20":"raticate",
+    "21":"spearow",
+    "22":"fearow",
+    "23":"ekans",
+    "24":"arbok",
+    "25":"pikachu",
+    "26":"raichu",
+    "27":"sandshrew",
+    "28":"sandslash",
+    "29":"nidoran",
+    "30":"nidorina",
+    "31":"nidoqueen",
+    "32":"nidoran",
+    "33":"nidorino",
+    "34":"nidoking",
+    "35":"clefairy",
+    "36":"clefable",
+    "37":"vulpix",
+    "38":"ninetales",
+    "39":"jigglypuff",
+    "40":"wigglytuff",
+    "41":"zubat",
+    "42":"golbat",
+    "43":"oddish",
+    "44":"gloom",
+    "45":"vileplume",
+    "46":"paras",
+    "47":"parasect",
+    "48":"venonat",
+    "49":"venomoth",
+    "50":"diglett",
+    "51":"dugtrio",
+    "52":"meowth",
+    "53":"persian",
+    "54":"psyduck",
+    "55":"golduck",
+    "56":"mankey",
+    "57":"primeape",
+    "58":"growlithe",
+    "59":"arcanine",
+    "60":"poliwag",
+    "61":"poliwhirl",
+    "62":"poliwrath",
+    "63":"abra",
+    "64":"kadabra",
+    "65":"alakazam",
+    "66":"machop",
+    "67":"machoke",
+    "68":"machamp",
+    "69":"bellsprout",
+    "70":"weepinbell",
+    "71":"victreebel",
+    "72":"tentacool",
+    "73":"tentacruel",
+    "74":"geodude",
+    "75":"graveler",
+    "76":"golem",
+    "77":"ponyta",
+    "78":"rapidash",
+    "79":"slowpoke",
+    "80":"slowbro"
+}
 
 /**
  *  Note: the checkboxes do not have any current functionality when checked or unchecked
@@ -10,12 +92,13 @@ const addTaskButton = document.getElementById("add-task");
 
 // Function that loads JSON file for webpage to display task list
 function loadTasks() {
-    fetch('task-list/hard-coded-tasks.json')
+    fetch('task-list/hard-coded-tasks.JSON')
         .then(response => response.json())
         .then(data => {
             data.forEach(task => {
                 renderTask(task);
             });
+            displayRandomImage();
         });
 }
 
@@ -65,10 +148,23 @@ function renderTask(taskItem) {
     buttonContainer.appendChild(editButton);
     buttonContainer.appendChild(deleteButton);
 
+    // Create image container with an image element
+    const imageContainer = document.createElement("div");
+    const image = document.createElement("img");
+    image.id = "random-image" + taskItem.id; 
+    image.src = ""; 
+    image.alt = "";
+    image.style.width = "100px";
+    image.style.height = "100px";
+
+    // Put image into a "container"
+    imageContainer.appendChild(image);
+
     taskDiv.appendChild(checkbox);
     taskDiv.appendChild(taskDescription);
     taskDiv.appendChild(dueDate);
     taskDiv.appendChild(buttonContainer);
+    taskDiv.appendChild(imageContainer);
 
     taskList.appendChild(taskDiv);
 }
@@ -254,19 +350,45 @@ function displayTasks() {
         .catch(error => console.error('Error fetching tasks:', error));
 }
 
-function getRandomImageUrl() {
+// Function to generate random number 1-80 
+function genRandomNum() {
     var numPokemon = 80;
     var randomIndex = Math.floor(Math.random() * numPokemon)+1;
     var randomNumberString = randomIndex.toString();
-    while (randomNumberString.length < 3) {
-        randomNumberString = '0' + randomNumberString;
+    return randomNumberString;
+}
+
+// Function uses getRandomNum to generate an image URL to the corresponding pokémon
+function getImageUrl() {
+    var randPokemonNum = genRandomNum()
+    while (randPokemonNum.length < 3) {
+        randPokemonNum = '0' + randPokemonNum;
     }
-    return "UI_src/imgs/pokemon/pokemon_icon_" + randomNumberString + "_00.png";
+    return "UI_src/imgs/pokemon/pokemon_icon_" + randPokemonNum + "_00.png";
+}
+ 
+/* 
+    Function checks for completed tasks, and adds the pokémon associated with them to a list.
+
+    To be used in the UI for the invetory bar under the 
+*/
+function addPokemonToInventory() {
+    var caughtPokemon = []
+    var tasks = document.querySelectorAll(".task");
+    for (var task of tasks) {
+        var checkbox = task.querySelector(".task-checkbox");
+        if (checkbox && checkbox.checked) {
+            var pokemonCaught = task.getAttribute("pokemon-number");
+            caughtPokemon.push(pokemon_dict[pokemonCaught])
+        }
+    }
+    console.log(caughtPokemon);
+    return caughtPokemon;
 }
 
 function displayRandomImage() {
-    for (var i = 1; i < 5; i++) {
-        var randomImageUrl = getRandomImageUrl();
+    for (var i = 1; i < 8; i++) {
+        var randomImageUrl = getImageUrl();
         var imageElement = document.getElementById("random-image" + i);
         imageElement.src = randomImageUrl;
         imageElement.alt = randomImageUrl;
@@ -275,4 +397,4 @@ function displayRandomImage() {
 
 // Call the function to display tasks when the page loads
 displayTasks();
-displayRandomImage()
+addPokemonToInventory();
