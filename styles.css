@@ -131,12 +131,6 @@
             .delete-button:hover {
                 background-color: rgb(197, 177, 148);
             }
-
-            .input-box {
-                border-radius: 5px; 
-                margin-left: 5px;
-                border-width: 1.5px;
-            }
             
             .save-button {
                 padding: 5px 10px; 
