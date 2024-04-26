@@ -46,6 +46,13 @@
 
             }
         }
+        
+        #pokemon-inventory {
+            height: 60%;
+            /* background-color: rgb(209, 18, 18); //testing purposes */
+            width: 100%;
+            overflow: scroll;
+        }
     }
 
     #space-column {

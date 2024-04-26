@@ -1,3 +1,5 @@
+let caughtPokemon = []
+
 pokemon_dict = {
     "1":"bulbasaur",
     "2":"ivysaur",
@@ -98,7 +100,7 @@ function loadTasks() {
             data.forEach(task => {
                 renderTask(task);
             });
-            displayRandomImage();
+            //displayRandomImage();
         });
 }
 
@@ -116,6 +118,11 @@ function renderTask(taskItem) {
     checkbox.checked = taskItem.completed;
     checkbox.classList.add("task-checkbox");
     //checkbox.onchange = () => updateTaskCompletion(taskItem.id, checkbox.checked);
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            addPokemonToInventory(taskDiv);
+        }
+    });
     
     // Create header element for task title
     const taskDescription = document.createElement("span");
@@ -152,8 +159,8 @@ function renderTask(taskItem) {
     const imageContainer = document.createElement("div");
     const image = document.createElement("img");
     image.id = "random-image" + taskItem.id; 
-    image.src = ""; 
-    image.alt = "";
+    image.src = getImageUrl(taskDiv.getAttribute("pokemon-number")); 
+    image.alt = getImageUrl(taskDiv.getAttribute("pokemon-number"));
     image.style.width = "100px";
     image.style.height = "100px";
 
@@ -359,12 +366,20 @@ function genRandomNum() {
 }
 
 // Function uses getRandomNum to generate an image URL to the corresponding pokémon
-function getImageUrl() {
-    var randPokemonNum = genRandomNum()
-    while (randPokemonNum.length < 3) {
-        randPokemonNum = '0' + randPokemonNum;
+function getImageUrl(num) {
+    if (num == null) {
+        var randPokemonNum = genRandomNum()
+        while (randPokemonNum.length < 3) {
+            randPokemonNum = '0' + randPokemonNum;
+        }
+        return "UI_src/imgs/pokemon/pokemon_icon_" + randPokemonNum + "_00.png";
     }
-    return "UI_src/imgs/pokemon/pokemon_icon_" + randPokemonNum + "_00.png";
+    else {
+        while (num.length < 3) {
+            num = '0' + num;
+        } 
+        return "UI_src/imgs/pokemon/pokemon_icon_" + num + "_00.png";
+    }  
 }
  
 /* 
@@ -372,29 +387,38 @@ function getImageUrl() {
 
     To be used in the UI for the invetory bar under the 
 */
-function addPokemonToInventory() {
-    var caughtPokemon = []
-    var tasks = document.querySelectorAll(".task");
-    for (var task of tasks) {
-        var checkbox = task.querySelector(".task-checkbox");
-        if (checkbox && checkbox.checked) {
-            var pokemonCaught = task.getAttribute("pokemon-number");
-            caughtPokemon.push(pokemon_dict[pokemonCaught])
-        }
-    }
-    console.log(caughtPokemon);
-    return caughtPokemon;
+function addPokemonToInventory(task) {
+    var pokemonNumber = task.getAttribute("pokemon-number");
+    caughtPokemon.push(pokemonNumber);
+
+    displayCaughtPokemon(); // Call to update the display after adding
 }
 
-function displayRandomImage() {
-    for (var i = 1; i < 8; i++) {
-        var randomImageUrl = getImageUrl();
-        var imageElement = document.getElementById("random-image" + i);
-        imageElement.src = randomImageUrl;
-        imageElement.alt = randomImageUrl;
-    }
+function displayNumOfPokemonCaught() {
+
+    var pokemonInventory = document.getElementById('pokemon-inventory')
 }
+
+
+function displayCaughtPokemon() {
+        // Reset the image list and HTML container
+        let pokemonImgURLList = [];
+        var pokemonInventory = document.getElementById('pokemon-inventory');
+        pokemonInventory.innerHTML = ''; // Clear existing images
+    
+        for (var i = 0; i < caughtPokemon.length; i++) {
+            let imageUrl = getImageUrl(caughtPokemon[i]);
+            pokemonImgURLList.push(imageUrl);
+        }
+    
+        // Now add new image elements to the container
+        for (var j = 0; j < pokemonImgURLList.length; j++) {
+            var img = new Image();
+            img.src = pokemonImgURLList[j];
+            pokemonInventory.appendChild(img);
+        }
+}
+
 
 // Call the function to display tasks when the page loads
 displayTasks();
-addPokemonToInventory();
