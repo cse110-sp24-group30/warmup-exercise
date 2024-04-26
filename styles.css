@@ -99,6 +99,7 @@
                 flex: 8;
                 font-size: 20px;
                 font-weight: bold;
+                color: rgba(245, 120, 209, 0.932);
             }
 
             #image-container {
@@ -112,7 +113,6 @@
 
         .task:hover {
             background-color: rgba(83, 8, 52, 0.888); 
-            
             cursor: pointer; 
             transition: background-color 0.3s ease; 
             transform: translateY(-10px);
