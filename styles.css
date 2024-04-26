@@ -106,5 +106,9 @@
             margin: auto 20px auto 10px;
         }
 
+        .hidden {
+            display: none;
+          }
+
     }
 }

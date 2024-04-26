@@ -40,6 +40,22 @@ function displayRandomImage() {
     }
 }
 
+function onCheck() {
+    var xmark = document.querySelector('.xmark');
+    var checkmark = document.querySelector('.checkmark');
+    var existingRadio = document.querySelector('.radiobtn');
+
+    if (existingRadio.checked) {
+      xmark.classList.add('hidden');
+      checkmark.classList.remove('hidden');
+      document.querySelector('.image').src = "UI_src/imgs/check-mark-image.jpeg"; // Change image src if needed
+    } else {
+      xmark.classList.remove('hidden');
+      checkmark.classList.add('hidden');
+      document.querySelector('.image').src = "UI_src/imgs/x-mark--image.jpeg"; // Change image src if needed
+    }
+  }
+
 // Call the function to display tasks when the page loads
 displayTasks();
 displayRandomImage()
