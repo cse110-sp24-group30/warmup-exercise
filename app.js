@@ -142,14 +142,12 @@ function editTask(divItem, taskId) {
     // Create a save button to save changes
     const saveButton = document.createElement("button");
     saveButton.textContent = "Save";
-    saveButton.setAttribute("class", "save-button");
     saveButton.addEventListener("click", () => saveEdit(divItem, taskId, editInput.value, taskTitle, 
         dateInput.value, originalDate, timeInput.value, originalTime));
 
     // Create a cancel button to cancel changes
     const cancelButton = document.createElement("button");
     cancelButton.textContent = "Cancel";
-    cancelButton.setAttribute("class", "cancel-button");
     cancelButton.addEventListener("click", () => cancelEdit(divItem, taskTitle));
     
     buttonContainer.appendChild(saveButton);
