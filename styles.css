@@ -75,12 +75,14 @@
             /* background-color: rgb(209, 18, 18); //testing purposes */
             width: 90%;
             overflow: scroll;
+            
         }
 
         .task {
             height: 100%;
             /* background-color: rgb(209, 18, 18); //testing purposes */
             width: 90%;
+
         }
 
         .task {
@@ -93,13 +95,13 @@
             border-radius: 30px;
             padding-left: 5px;
             transition: transform 0.2s ease;
+            color: rgba(245, 120, 209, 0.932);
 
             #task-text {
                 padding: 2% 5% 2% 5%;
                 flex: 8;
                 font-size: 20px;
                 font-weight: bold;
-                color: rgba(245, 120, 209, 0.932);
             }
 
             #image-container {
@@ -112,16 +114,13 @@
         }
 
         .task:hover {
-            background-color: rgba(83, 8, 52, 0.888); 
+            background-color: rgba(4, 137, 119, 0.888); 
             cursor: pointer; 
             transition: background-color 0.3s ease; 
             transform: translateY(-10px);
+            color: rgba(195, 247, 131, 0.932);
         }
-
-        #task-text:hover {
-            color: rgba(245, 120, 209, 0.932);
-        }
-
+        
 
         .radiobtn {
             margin: auto 20px auto 10px;
