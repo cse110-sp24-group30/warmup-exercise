@@ -66,6 +66,34 @@ function renderTask(taskItem) {
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => deleteTask(taskDiv, taskItem.id));
 
+     // Create a div for the health bar container
+    const healthBarContainer = document.createElement("div");
+    healthBarContainer.classList.add("health-bar-container");
+
+    //Calculate the amount of time left, then make the div element that width accordingly
+    let dueDateUnix = new Date(taskItem.due).getTime();
+    let now = Math.floor(Date.now());
+    let difference = dueDateUnix - now;
+
+    // Calculate the width of the health bar based on the time left
+    let widthPercentage = (difference / dueDateUnix) * 8000;
+
+    //If due date has passed, make sure health bar is empty
+    if (dueDateUnix < now) {
+        widthPercentage = 0;
+    }
+
+    // Create a div for the health bar
+    const healthBar = document.createElement("div");
+    healthBar.classList.add("health-bar");  
+
+    // Set the width of the health bar
+    healthBar.style.width = `${widthPercentage}%`;
+
+    // Add the health bar to the container
+    healthBarContainer.appendChild(healthBar);
+
+
     // Put edit & delete button into "container"
     buttonContainer.appendChild(editButton);
     buttonContainer.appendChild(deleteButton);
@@ -74,6 +102,9 @@ function renderTask(taskItem) {
     taskDiv.appendChild(taskDescription);
     taskDiv.appendChild(dueDate);
     taskDiv.appendChild(buttonContainer);
+
+    taskDiv.appendChild(healthBarContainer);  
+
 
     taskList.appendChild(taskDiv);
 }
