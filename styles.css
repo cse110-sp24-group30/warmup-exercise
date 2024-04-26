@@ -85,7 +85,7 @@
             margin: 30px;
             border-radius: 30px;
             padding-left: 5px;
-            
+            transition: transform 0.2s ease;
 
             #task-text {
                 padding: 2% 5% 2% 5%;
@@ -104,9 +104,15 @@
         }
 
         .task:hover {
-            background-color: rgba(230, 129, 188, 0.571); 
+            background-color: rgba(83, 8, 52, 0.888); 
+            
             cursor: pointer; 
             transition: background-color 0.3s ease; 
+            transform: translateY(-10px);
+        }
+
+        #task-text:hover {
+            color: rgba(245, 120, 209, 0.932);
         }
 
 
