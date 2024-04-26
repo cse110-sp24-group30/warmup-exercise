@@ -32,6 +32,12 @@ function renderTask(taskItem) {
     checkbox.checked = taskItem.completed;
     checkbox.classList.add("task-checkbox");
     //checkbox.onchange = () => updateTaskCompletion(taskItem.id, checkbox.checked);
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            // Call function to display confetti
+            displayConfetti();
+        }
+    });
     
     // Create header element for task title
     const taskDescription = document.createElement("span");
@@ -70,6 +76,39 @@ function renderTask(taskItem) {
     taskDiv.appendChild(buttonContainer);
 
     taskList.appendChild(taskDiv);
+}
+
+function displayConfetti() {
+    // Create confetti elements and add to the document
+    const confettiContainer = document.createElement("div");
+    confettiContainer.classList.add("confetti-container");
+    document.body.appendChild(confettiContainer);
+
+    // Create confetti pieces
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.backgroundColor = getRandomColor();
+        confetti.style.left = `${Math.random() * window.innerWidth}px`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confetti.style.animationDelay = `${Math.random()}s`;
+        confettiContainer.appendChild(confetti);
+    }
+
+    // Remove confetti after animation
+    setTimeout(() => {
+        document.body.removeChild(confettiContainer);
+    }, 5000);
+}
+
+// Random color generator for confetti
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 // // Function that adds a new task
