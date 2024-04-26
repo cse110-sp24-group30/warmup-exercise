@@ -85,6 +85,7 @@
             margin: 30px;
             border-radius: 30px;
             padding-left: 5px;
+            
 
             #task-text {
                 padding: 2% 5% 2% 5%;
@@ -101,6 +102,13 @@
                 align-items: end;
             }
         }
+
+        .task:hover {
+            background-color: rgba(230, 129, 188, 0.571); 
+            cursor: pointer; 
+            transition: background-color 0.3s ease; 
+        }
+
 
         .radiobtn {
             margin: auto 20px auto 10px;
