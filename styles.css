@@ -69,7 +69,8 @@
         #pokemon-inventory {
             height: 50%;
             width: 100%;
-            overflow: scroll;
+            /* overflow: scroll; */
+            
         }
     }
 
@@ -101,6 +102,9 @@
             /* background-color: rgb(209, 18, 18); //testing purposes */
             width: 90%;
             overflow: scroll;
+            overflow-x: hidden;
+            text-align: center;
+            align-items: center;
 
         }
 
@@ -108,6 +112,7 @@
             height: 100%;
             /* background-color: rgb(209, 18, 18); //testing purposes */
             width: 90%;
+            align-items: center;
 
         }
 
