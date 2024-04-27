@@ -154,6 +154,7 @@ function renderTask(taskItem) {
     deleteButton.setAttribute("class", "delete-button");
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => deleteTask(taskDiv, taskItem.id));
+    deleteButton.addEventListener("click", () => removePokemonFromInventory(taskDiv));
 
     // Create a div for the health bar container
     const healthBarContainer = document.createElement("div");
