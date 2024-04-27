@@ -19,6 +19,7 @@
 ### Weakness
 - Since the data is hardcoded from JSON files, the widget lacks dynamic interaction with real-time data, which could limit its practicality beyond academic purposes
 -  Due to time constraints, comprehensive documentation and thorough testing were not as prioritized as they could have been
+-  Widget is designed for the web, so UI may be hindered on mobile devices
 
 ### Opportunity
 - Offers opportunity to delve deeply into the basics of web development and to practice clean, maintainable coding practices without relying on frameworks
