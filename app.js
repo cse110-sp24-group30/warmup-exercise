@@ -123,6 +123,9 @@ function renderTask(taskItem) {
             displayConfetti();
             addPokemonToInventory(taskDiv);
         }
+        if (!this.checked) {
+            removePokemonFromInventory(taskDiv);
+        }
     });
 
     // Create header element for task title
@@ -452,6 +455,15 @@ function addPokemonToInventory(task) {
     displayCaughtPokemon(); // Call to update the display after adding
     return "UI_src/imgs/pokemon/pokemon_icon_" + randomNumberString + "_00.png";
 }
+
+function removePokemonFromInventory(task) {
+    var pokemonNumber = task.getAttribute("pokemon-number");
+    var idx = caughtPokemon.indexOf(pokemonNumber);
+    caughtPokemon.splice(idx, idx+1);
+
+    displayCaughtPokemon();
+}
+
 function displayCaughtPokemon() {
     // Reset the image list and HTML container
     let pokemonImgURLList = [];
