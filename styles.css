@@ -14,9 +14,10 @@
     #petals-animation {
         background-image: url('UI_src/imgs/petals1.gif');
         /* background-image: url('UI_src/imgs/petals_falling.gif'); */
-        background-size:cover;
+        background-size: cover;
         width: 100vw;
         height: 100vh;
+
         #blur {
             background-color: rgba(255, 255, 255, 0.098);
             backdrop-filter: blur(2px);
@@ -25,8 +26,6 @@
 
         }
     }
-
-
 }
 
 #column-container {
@@ -51,11 +50,11 @@
             border-bottom: 2px solid rgb(116, 104, 89);
             display: flex;
             flex-direction: column;
-            justify-content:flex-start;
+            justify-content: flex-start;
             align-items: center;
             padding-top: 30px;
             gap: 40px;
-            
+
 
             #avatar-greeting {
                 font-size: 24px;
@@ -63,15 +62,14 @@
             }
         }
 
-        #teamLogo{
+        #teamLogo {
             border-radius: 10%;
         }
 
-        #avatar-inventory{
-            height: 20%;
-            width: 90%;
-            padding: 5% 5%;
-            font-size: 30px;
+        #pokemon-inventory {
+            height: 50%;
+            width: 100%;
+            overflow: scroll;
         }
     }
 
@@ -84,7 +82,7 @@
         border-radius: 30px;
         background-color: rgba(234, 232, 229, 0.5);
         box-sizing: border-box;
-        
+
 
         #tasks-header {
             background-color: rgb(197, 177, 148);
@@ -103,7 +101,7 @@
             /* background-color: rgb(209, 18, 18); //testing purposes */
             width: 90%;
             overflow: scroll;
-            
+
         }
 
         .task {
@@ -132,7 +130,7 @@
                 font-weight: bold;
             }
 
-/*             #hpcontainer{
+            /*             #hpcontainer{
                 flex: 1;
                 display: flex;
                 align-items: center;
@@ -179,86 +177,96 @@
                 border-radius: 10px;
                 background-color: red;
             } */
-            
 
-            #image-container {
+
+            /* #image-container {
                 flex: 1;
                 display: flex;
-                /* background-color: rgb(209, 18, 18); //testing purposes */
+                background-color: rgb(209, 18, 18); //testing purposes
                 height: 100%;
+                align-items: end;
+            } */
+
+            .pokemon-div{
+                display: flex;
                 align-items: end;
             }
 
             .health-bar-container {
-                width: 60%; 
-                height: 25%; 
+                width: 60%;
+                height: 25%;
                 background-color: red;
-                border: 0.2em solid rgb(116, 104, 89);  
-                 
+                border: 0.2em solid rgb(116, 104, 89);
+
                 display: flex;
                 justify-content: start;
             }
-                
+
             .health-bar {
                 /* The width will be set dynamically in the JavaScript code */
                 height: 100%;
-                background-color: rgb(141,193,21);
+                background-color: rgb(141, 193, 21);
             }
         }
 
 
-      .task:hover {
-            background-color: rgba(31, 170, 151, 0.888); 
-            cursor: pointer; 
-            transition: background-color 0.3s ease; 
+        .task:hover {
+            background-color: rgba(31, 170, 151, 0.888);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
             transform: translateY(-10px);
             color: rgba(195, 247, 131, 0.932);
         }
+
         .edit-button {
-            padding: 5px 10px; 
+            padding: 5px 10px;
             border: none;
-            border-radius: 10px; 
-            background-color: rgb(235, 219, 195); 
-            cursor: pointer; 
+            border-radius: 10px;
+            background-color: rgb(235, 219, 195);
+            cursor: pointer;
             margin-left: 5px;
             margin-right: 5px;
         }
+
         .edit-button:hover {
-            background-color: rgb(197, 177, 148); 
+            background-color: rgb(197, 177, 148);
         }
 
         .delete-button {
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 10px; 
-            background-color: rgb(235, 219, 195); 
-            cursor: pointer; 
+            padding: 5px 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: rgb(235, 219, 195);
+            cursor: pointer;
         }
+
         .delete-button:hover {
             background-color: rgb(197, 177, 148);
         }
 
         .save-button {
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 10px; 
-            background-color: rgb(235, 219, 195); 
-            cursor: pointer; 
+            padding: 5px 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: rgb(235, 219, 195);
+            cursor: pointer;
             margin-top: 0px;
             margin-right: 5px;
             margin-left: 5px;
         }
+
         .save-button:hover {
-            background-color: rgb(197, 177, 148); 
+            background-color: rgb(197, 177, 148);
         }
 
         .cancel-button {
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 10px; 
-            background-color: rgb(235, 219, 195); 
-            cursor: pointer; 
+            padding: 5px 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: rgb(235, 219, 195);
+            cursor: pointer;
         }
+
         .cancel-button:hover {
             background-color: rgb(197, 177, 148);
         }
@@ -285,7 +293,8 @@
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: #ff6384; /* You can change the color here */
+    background-color: #ff6384;
+    /* You can change the color here */
     border-radius: 50%;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
     animation: fall linear infinite;
@@ -298,8 +307,8 @@
     0% {
         transform: translateY(0) rotateZ(0);
     }
+
     100% {
         transform: translateY(100vh) rotateZ(360deg);
     }
 }
-

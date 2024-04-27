@@ -2,6 +2,91 @@
  *  Note: the checkboxes do not have any current functionality when checked or unchecked
  */
 
+let caughtPokemon = []
+
+pokemon_dict = {
+    "1": "bulbasaur",
+    "2": "ivysaur",
+    "3": "venusaur",
+    "4": "charmander",
+    "5": "charmeleon",
+    "6": "charizard",
+    "7": "squirtle",
+    "8": "wartortle",
+    "9": "blastoise",
+    "10": "caterpie",
+    "11": "metapod",
+    "12": "butterfree",
+    "13": "weedle",
+    "14": "kakuna",
+    "15": "beedrill",
+    "16": "pidgey",
+    "17": "pidgeotto",
+    "18": "pidgeot",
+    "19": "rattata",
+    "20": "raticate",
+    "21": "spearow",
+    "22": "fearow",
+    "23": "ekans",
+    "24": "arbok",
+    "25": "pikachu",
+    "26": "raichu",
+    "27": "sandshrew",
+    "28": "sandslash",
+    "29": "nidoran",
+    "30": "nidorina",
+    "31": "nidoqueen",
+    "32": "nidoran",
+    "33": "nidorino",
+    "34": "nidoking",
+    "35": "clefairy",
+    "36": "clefable",
+    "37": "vulpix",
+    "38": "ninetales",
+    "39": "jigglypuff",
+    "40": "wigglytuff",
+    "41": "zubat",
+    "42": "golbat",
+    "43": "oddish",
+    "44": "gloom",
+    "45": "vileplume",
+    "46": "paras",
+    "47": "parasect",
+    "48": "venonat",
+    "49": "venomoth",
+    "50": "diglett",
+    "51": "dugtrio",
+    "52": "meowth",
+    "53": "persian",
+    "54": "psyduck",
+    "55": "golduck",
+    "56": "mankey",
+    "57": "primeape",
+    "58": "growlithe",
+    "59": "arcanine",
+    "60": "poliwag",
+    "61": "poliwhirl",
+    "62": "poliwrath",
+    "63": "abra",
+    "64": "kadabra",
+    "65": "alakazam",
+    "66": "machop",
+    "67": "machoke",
+    "68": "machamp",
+    "69": "bellsprout",
+    "70": "weepinbell",
+    "71": "victreebel",
+    "72": "tentacool",
+    "73": "tentacruel",
+    "74": "geodude",
+    "75": "graveler",
+    "76": "golem",
+    "77": "ponyta",
+    "78": "rapidash",
+    "79": "slowpoke",
+    "80": "slowbro"
+}
+
 // Variables based on HTML ID tags
 const taskList = document.getElementById("task_list_items");
 const newTaskInput = document.getElementById("new-task");
@@ -25,20 +110,21 @@ function renderTask(taskItem) {
     taskDiv.setAttribute("task-id", taskItem.id);
     taskDiv.classList.add("task");
     taskDiv.setAttribute("pokemon-number", randomNumberGenerator());
-    
+
     // Create checkbox (NEW)
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = taskItem.completed;
     checkbox.classList.add("task-checkbox");
     //checkbox.onchange = () => updateTaskCompletion(taskItem.id, checkbox.checked);
-    checkbox.addEventListener('change', function() {
+    checkbox.addEventListener('change', function () {
         if (this.checked) {
             // Call function to display confetti
             displayConfetti();
+            addPokemonToInventory(taskDiv);
         }
     });
-    
+
     // Create header element for task title
     const taskDescription = document.createElement("span");
     taskDescription.textContent = taskItem.task;
@@ -49,10 +135,10 @@ function renderTask(taskItem) {
     const dueDate = document.createElement("span");
     dueDate.textContent = ` Due: ${new Date(taskItem.due).toLocaleString()}`;
     dueDate.setAttribute("name", "dueDate");
-    
+
     // Create a "container" to hold edit/delete button
     const buttonContainer = document.createElement("div");
-    buttonContainer.setAttribute("class","buttons");
+    buttonContainer.setAttribute("class", "buttons");
 
     // Create a edit button element for each task 
     const editButton = document.createElement("button");
@@ -66,7 +152,7 @@ function renderTask(taskItem) {
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => deleteTask(taskDiv, taskItem.id));
 
-     // Create a div for the health bar container
+    // Create a div for the health bar container
     const healthBarContainer = document.createElement("div");
     healthBarContainer.classList.add("health-bar-container");
 
@@ -85,7 +171,7 @@ function renderTask(taskItem) {
 
     // Create a div for the health bar
     const healthBar = document.createElement("div");
-    healthBar.classList.add("health-bar");  
+    healthBar.classList.add("health-bar");
 
     // Set the width of the health bar
     healthBar.style.width = `${widthPercentage}%`;
@@ -98,12 +184,25 @@ function renderTask(taskItem) {
     buttonContainer.appendChild(editButton);
     buttonContainer.appendChild(deleteButton);
 
+    // Create image container with an image element
+    const imageContainer = document.createElement("div");
+    imageContainer.classList.add("pokemon-div")
+    const image = document.createElement("img");
+    image.id = "random-image" + taskItem.id;
+    image.src = getImageUrl(taskDiv.getAttribute("pokemon-number"));
+    image.alt = getImageUrl(taskDiv.getAttribute("pokemon-number"));
+    image.style.width = "100px";
+    image.style.height = "100px";
+
+    // Put image into a "container"
+    imageContainer.appendChild(image);
+
     taskDiv.appendChild(checkbox);
     taskDiv.appendChild(taskDescription);
     taskDiv.appendChild(dueDate);
     taskDiv.appendChild(buttonContainer);
-
-    taskDiv.appendChild(healthBarContainer);  
+    taskDiv.appendChild(imageContainer);
+    taskDiv.appendChild(healthBarContainer);
 
 
     taskList.appendChild(taskDiv);
@@ -166,7 +265,7 @@ function getRandomColor() {
 // Function that deletes a task
 function deleteTask(divItem, taskId) {
     fetch('task-list/hard-coded-tasks.JSON')
-    .then(response => response.json())
+        .then(response => response.json())
         .then(data => {
             divItem.remove();
         });
@@ -176,7 +275,7 @@ function deleteTask(divItem, taskId) {
 function editTask(divItem, taskId) {
     // Get current task title/description
     const taskTitle = divItem.querySelector("span[name='taskDescription']").textContent;
-    
+
     // Create input text box to change task title
     const editInput = document.createElement("input");
     editInput.type = "text";
@@ -195,7 +294,7 @@ function editTask(divItem, taskId) {
     // Time
     const timeInput = document.createElement("input");
     timeInput.type = "time";
-    timeInput.value = currentDueDate.toTimeString().substring(0,5);
+    timeInput.value = currentDueDate.toTimeString().substring(0, 5);
     const originalTime = timeInput.value;
 
     // Hide task title, edit/delete buttons
@@ -203,16 +302,16 @@ function editTask(divItem, taskId) {
     divItem.querySelector("span[name='dueDate']").style.display = "none";
     divItem.querySelector("div[class='buttons']").style.display = "none";
     divItem.querySelector("input[type='checkbox']").style.display = "none";
-    
+
     // Wrap buttons for better query targeting
     const buttonContainer = document.createElement("div");
-    buttonContainer.setAttribute("class","edit-buttons"); 
-    
+    buttonContainer.setAttribute("class", "edit-buttons");
+
     // Create a save button to save changes
     const saveButton = document.createElement("button");
     saveButton.textContent = "Save";
     saveButton.setAttribute("class", "save-button");
-    saveButton.addEventListener("click", () => saveEdit(divItem, taskId, editInput.value, taskTitle, 
+    saveButton.addEventListener("click", () => saveEdit(divItem, taskId, editInput.value, taskTitle,
         dateInput.value, originalDate, timeInput.value, originalTime));
 
     // Create a cancel button to cancel changes
@@ -220,7 +319,7 @@ function editTask(divItem, taskId) {
     cancelButton.textContent = "Cancel";
     cancelButton.setAttribute("class", "cancel-button");
     cancelButton.addEventListener("click", () => cancelEdit(divItem, taskTitle));
-    
+
     buttonContainer.appendChild(saveButton);
     buttonContainer.appendChild(cancelButton);
 
@@ -235,7 +334,7 @@ function saveEdit(divItem, taskId, newTitle, taskTitle, newDate, originalDate, n
     let flag = false;
     let flag2 = false;
     var dateObj = new Date(newDate);
-    
+
     if (newTitle != taskTitle && newTitle.length != 0) {
         divItem.querySelector("span[name='taskDescription']").textContent = newTitle;
     }
@@ -243,13 +342,13 @@ function saveEdit(divItem, taskId, newTitle, taskTitle, newDate, originalDate, n
     if (newDate != originalDate) {
         flag = true;
     }
-    if(newTime != originalTime) {
+    if (newTime != originalTime) {
         flag2 = true;
     }
 
     if (flag || flag2) {
         if (flag) {
-            dateObj.setDate(dateObj.getDate() + 1);   
+            dateObj.setDate(dateObj.getDate() + 1);
         }
         if (flag2) {
             var time = newTime.split(":")
@@ -273,7 +372,7 @@ function cancelEdit(divItem, originalTitle) {
     divItem.querySelector("span[name='dueDate']").removeAttribute("style");
     divItem.querySelector("div[class='buttons']").removeAttribute("style");
     divItem.querySelector("input[type='checkbox']").removeAttribute("style");
-    
+
     // Deletes the input text box & container that contains save/cancel button
     divItem.querySelector("input[type='text']").remove();
     divItem.querySelector("div[class='edit-buttons']").remove();
@@ -281,9 +380,9 @@ function cancelEdit(divItem, originalTitle) {
     divItem.querySelector("input[type='time']").remove();
 }
 
-function randomNumberGenerator () {
+function randomNumberGenerator() {
     var numPokemon = 80;
-    var randomIndex = Math.floor(Math.random() * numPokemon)+1;
+    var randomIndex = Math.floor(Math.random() * numPokemon) + 1;
     var randomNumberString = randomIndex.toString();
     return randomNumberString;
 }
@@ -325,25 +424,53 @@ function displayTasks() {
         .catch(error => console.error('Error fetching tasks:', error));
 }
 
-function getRandomImageUrl() {
+function genRandomNum() {
     var numPokemon = 80;
-    var randomIndex = Math.floor(Math.random() * numPokemon)+1;
+    var randomIndex = Math.floor(Math.random() * numPokemon) + 1;
     var randomNumberString = randomIndex.toString();
-    while (randomNumberString.length < 3) {
-        randomNumberString = '0' + randomNumberString;
+    return randomNumberString;
+}
+
+function getImageUrl(num) {
+    if (num == null) {
+        var randPokemonNum = genRandomNum()
+        while (randPokemonNum.length < 3) {
+            randPokemonNum = '0' + randPokemonNum;
+        }
+        return "UI_src/imgs/pokemon/pokemon_icon_" + randPokemonNum + "_00.png";
     }
+    while (num.length < 3) {
+        num = '0' + num;
+    }
+    return "UI_src/imgs/pokemon/pokemon_icon_" + num + "_00.png";
+}
+
+function addPokemonToInventory(task) {
+    var pokemonNumber = task.getAttribute("pokemon-number");
+    caughtPokemon.push(pokemonNumber);
+
+    displayCaughtPokemon(); // Call to update the display after adding
     return "UI_src/imgs/pokemon/pokemon_icon_" + randomNumberString + "_00.png";
 }
+function displayCaughtPokemon() {
+    // Reset the image list and HTML container
+    let pokemonImgURLList = [];
+    var pokemonInventory = document.getElementById('pokemon-inventory');
+    pokemonInventory.innerHTML = ''; // Clear existing images
 
-function displayRandomImage() {
-    for (var i = 1; i < 5; i++) {
-        var randomImageUrl = getRandomImageUrl();
-        var imageElement = document.getElementById("random-image" + i);
-        imageElement.src = randomImageUrl;
-        imageElement.alt = randomImageUrl;
+    for (var i = 0; i < caughtPokemon.length; i++) {
+        let imageUrl = getImageUrl(caughtPokemon[i]);
+        pokemonImgURLList.push(imageUrl);
+    }
+
+    // Now add new image elements to the container
+    for (var j = 0; j < pokemonImgURLList.length; j++) {
+        var img = new Image();
+        img.src = pokemonImgURLList[j];
+        img.style.width = "100px";
+        img.style.length = "100px";
+        pokemonInventory.appendChild(img);
     }
 }
-
 // Call the function to display tasks when the page loads
 displayTasks();
-displayRandomImage()
