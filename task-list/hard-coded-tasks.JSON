@@ -2,7 +2,7 @@
     {
         "id": 1,
         "task": "Clean room",
-        "completed": true,
+        "completed": false ,
         "priority": "High",
         "due": "2024-12-23T16:25:00"
     },
@@ -30,7 +30,7 @@
     {
         "id": 5,
         "task": "Do laundry",
-        "completed": true,
+        "completed": false,
         "priority": "Medium",
         "due": "2024-04-24T16:05:00"
     },
